@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* ── Base ─────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-950 text-white antialiased;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* ── Custom utilities ──────────────────────────────── */
+@utility text-balance {
+  text-wrap: balance;
+}
+
+/* ── Custom range slider ───────────────────────────── */
+.slider-track {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    rgb(245 158 11) 0%,
+    rgb(245 158 11) var(--fill-pct, 50%),
+    rgb(51 65 85) var(--fill-pct, 50%),
+    rgb(51 65 85) 100%
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-track::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgb(253 230 138);
+  border: 2px solid rgb(245 158 11);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.slider-track::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.slider-track::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+}
+
+.slider-track::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgb(253 230 138);
+  border: 2px solid rgb(245 158 11);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+/* ── Leaflet overrides ─────────────────────────────── */
+.custom-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.map-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  transition: transform 0.15s ease;
+  cursor: pointer;
+}
+
+.map-marker:hover {
+  transform: scale(1.3);
+}
+
+/* Leaflet popup styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: none !important;
+}
+
+/* Scrollbar styling for sidebar */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(51 65 85) transparent;
+}
