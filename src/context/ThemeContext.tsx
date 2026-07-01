@@ -5,6 +5,7 @@ export type ThemeId = "dark" | "light"
 export interface Theme {
   id: ThemeId
   label: string
+  emoji: string
   mapTileUrl: string
   mapAttribution: string
 }
@@ -13,12 +14,14 @@ export const THEMES: Theme[] = [
   {
     id: "dark",
     label: "Dark",
+    emoji: "🌙",
     mapTileUrl: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
     mapAttribution: '&copy; <a href="https://carto.com/">CARTO</a>',
   },
   {
     id: "light",
     label: "Light",
+    emoji: "☀️",
     mapTileUrl: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
     mapAttribution: '&copy; <a href="https://carto.com/">CARTO</a>',
   },
