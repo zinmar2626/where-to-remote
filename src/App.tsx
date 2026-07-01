@@ -3,6 +3,7 @@ import { cities } from "./data/cities"
 import { filterCities, type FilterState } from "./utils/matching"
 import Sidebar from "./components/Sidebar"
 import MapView from "./components/MapView"
+import { ThemeProvider } from "./context/ThemeContext"
 
 const DEFAULT_FILTERS: FilterState = {
   minWifiStability: 0,
@@ -41,16 +42,18 @@ export default function App() {
   )
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-950">
-      <Sidebar
-        filters={filters}
-        matchCount={matchedCities.length}
-        totalCount={cities.length}
-        onFilterChange={handleFilterChange}
-        onToggleVibe={handleToggleVibe}
-        onReset={handleReset}
-      />
-      <MapView cities={matchedCities} />
-    </div>
+    <ThemeProvider>
+      <div className="flex h-screen overflow-hidden" style={{ backgroundColor: "var(--bg-app)" }}>
+        <Sidebar
+          filters={filters}
+          matchCount={matchedCities.length}
+          totalCount={cities.length}
+          onFilterChange={handleFilterChange}
+          onToggleVibe={handleToggleVibe}
+          onReset={handleReset}
+        />
+        <MapView cities={matchedCities} />
+      </div>
+    </ThemeProvider>
   )
 }

@@ -33,11 +33,17 @@ export default function SliderFilter({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="flex items-center gap-2 text-sm font-medium text-slate-300">
+        <span
+          className="flex items-center gap-2 text-sm font-medium"
+          style={{ color: "var(--text-secondary)" }}
+        >
           <span className="text-base">{emoji}</span>
           {label}
         </span>
-        <span className="text-sm font-semibold text-amber-400 tabular-nums">
+        <span
+          className="text-sm font-semibold tabular-nums"
+          style={{ color: "var(--accent)" }}
+        >
           {displayed}
         </span>
       </div>
@@ -57,7 +63,10 @@ export default function SliderFilter({
           }
         />
       </div>
-      <div className="flex justify-between text-[10px] text-slate-500">
+      <div
+        className="flex justify-between text-[10px]"
+        style={{ color: "var(--text-muted)" }}
+      >
         <span>{labelLeft ?? `${min}${unit}`}</span>
         <span>{labelRight ?? `${max}${unit}`}</span>
       </div>

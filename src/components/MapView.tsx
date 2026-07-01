@@ -8,6 +8,7 @@ import {
 } from "react-leaflet"
 import L from "leaflet"
 import type { City } from "../data/types"
+import { useTheme } from "../context/ThemeContext"
 
 // Fix Leaflet default icon paths (broken with bundlers)
 import "leaflet/dist/leaflet.css"
@@ -73,6 +74,18 @@ function FitBounds({ cities }: { cities: City[] }) {
   return null
 }
 
+// Tile layer that reacts to theme changes
+function ThemedTileLayer() {
+  const { theme } = useTheme()
+  return (
+    <TileLayer
+      key={theme.id}
+      url={theme.mapTileUrl}
+      attribution={theme.mapAttribution}
+    />
+  )
+}
+
 interface MapViewProps {
   cities: City[]
 }
@@ -87,10 +100,7 @@ export default function MapView({ cities }: MapViewProps) {
         zoomControl={false}
         attributionControl={false}
       >
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-        />
+        <ThemedTileLayer />
         <FitBounds cities={cities} />
         {cities.map((city) => (
           <Marker
@@ -99,38 +109,67 @@ export default function MapView({ cities }: MapViewProps) {
             icon={createIcon(getWorkspaceEmoji(city))}
           >
             <Popup>
-              <div className="min-w-[200px] font-sans">
+              <div className="min-w-[200px] font-sans" style={{ color: "var(--text-primary)" }}>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-lg">{getWorkspaceEmoji(city)}</span>
-                  <h3 className="font-bold text-sm text-gray-900">
+                  <h3 className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>
                     {city.name}
                   </h3>
                 </div>
-                <p className="text-[11px] text-gray-500 mb-1">
+                <p className="text-[11px] mb-1" style={{ color: "var(--text-muted)" }}>
                   {city.address}
                 </p>
-                <span className="inline-block mb-2 text-[11px] font-medium text-amber-700 bg-amber-100 rounded-full px-2 py-0.5">
+                <span
+                  className="inline-block mb-2 text-[11px] font-medium rounded-full px-2 py-0.5"
+                  style={{
+                    color: "var(--accent-text)",
+                    background: "var(--accent-bg)",
+                    border: "1px solid var(--accent-border)",
+                  }}
+                >
                   {city.mainVibe}
                 </span>
-                <p className="text-xs text-gray-600 mb-2">
+                <p className="text-xs mb-2" style={{ color: "var(--text-secondary)" }}>
                   {city.description}
                 </p>
                 <div className="flex flex-wrap gap-1.5 text-[10px]">
-                  <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-indigo-700 font-medium">
+                  <span
+                    className="rounded-full px-2 py-0.5 font-medium"
+                    style={{
+                      background: "var(--accent-bg)",
+                      color: "var(--accent-text)",
+                      border: "1px solid var(--accent-border)",
+                    }}
+                  >
                     📶 {city.internetMbps} Mbps
                   </span>
-                  <span className="rounded-full bg-sky-100 px-2 py-0.5 text-sky-700 font-medium">
+                  <span
+                    className="rounded-full px-2 py-0.5 font-medium"
+                    style={{
+                      background: "var(--bg-card)",
+                      color: "var(--text-secondary)",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
                     🔇 {["", "Library", "Calm", "Moderate", "Buzzy", "Lively"][city.noiseLevel]}
                   </span>
-                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-700 font-medium">
+                  <span
+                    className="rounded-full px-2 py-0.5 font-medium"
+                    style={{
+                      background: "var(--bg-card)",
+                      color: "var(--text-secondary)",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
                     💸 {(city.priceMMK / 1000).toFixed(0)}K MMK
                   </span>
                   <span
-                    className={`rounded-full px-2 py-0.5 font-medium ${
-                      city.hasGenerator
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-500"
-                    }`}
+                    className="rounded-full px-2 py-0.5 font-medium"
+                    style={{
+                      background: city.hasGenerator ? "var(--accent-bg)" : "rgba(239,68,68,0.1)",
+                      color: city.hasGenerator ? "var(--accent-text)" : "rgb(252,165,165)",
+                      border: `1px solid ${city.hasGenerator ? "var(--accent-border)" : "rgba(239,68,68,0.2)"}`,
+                    }}
                   >
                     🔌 {city.hasGenerator ? "Generator" : "No backup"}
                   </span>

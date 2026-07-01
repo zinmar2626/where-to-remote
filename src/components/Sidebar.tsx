@@ -2,6 +2,7 @@ import type { FilterState, VibePreset } from "../utils/matching"
 import { VIBE_PRESETS } from "../utils/matching"
 import SliderFilter from "./SliderFilter"
 import VibeButton from "./VibeButton"
+import ThemeToggle from "./ThemeToggle"
 
 interface SidebarProps {
   filters: FilterState
@@ -26,26 +27,55 @@ export default function Sidebar({
   onReset,
 }: SidebarProps) {
   return (
-    <aside className="flex h-screen w-[380px] shrink-0 flex-col border-r border-slate-800 bg-slate-950/95 backdrop-blur-xl">
+    <aside
+      className="flex h-screen w-[380px] shrink-0 flex-col scrollbar-thin"
+      style={{
+        background: "var(--bg-sidebar)",
+        borderRight: "1px solid var(--border-strong)",
+        backdropFilter: "blur(20px)",
+        transition: "background 0.3s ease, border-color 0.3s ease",
+      }}
+    >
       {/* ── Header ── */}
-      <div className="border-b border-slate-800 px-6 py-5">
-        <h1 className="text-xl font-bold tracking-tight text-white">
-          🇲🇲 Where to{" "}
-          <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
-            Remote
-          </span>
-          ?
-        </h1>
-        <p className="mt-1 text-xs text-slate-500">
-          Yangon • Workspace Explorer
-        </p>
+      <div
+        className="px-6 py-5"
+        style={{ borderBottom: "1px solid var(--border-strong)" }}
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h1
+              className="text-xl font-bold tracking-tight"
+              style={{ color: "var(--text-primary)" }}
+            >
+              🇲🇲 Where to{" "}
+              <span
+                style={{
+                  background: "linear-gradient(to right, var(--accent), color-mix(in srgb, var(--accent) 70%, #f97316))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                Remote
+              </span>
+              ?
+            </h1>
+            <p className="mt-1 text-xs" style={{ color: "var(--text-muted)" }}>
+              Yangon • Workspace Explorer
+            </p>
+          </div>
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* ── Scrollable content ── */}
       <div className="flex-1 overflow-y-auto px-6 py-5 space-y-7 scrollbar-thin">
         {/* Essentials */}
         <section>
-          <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">
+          <h2
+            className="mb-4 text-xs font-semibold uppercase tracking-widest"
+            style={{ color: "var(--text-muted)" }}
+          >
             ⚡ Essentials
           </h2>
           <div className="space-y-5">
@@ -90,15 +120,21 @@ export default function Sidebar({
           </div>
 
           {/* Generator toggle — Yangon's most important feature */}
-          <div className="mt-5 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3.5">
+          <div
+            className="mt-5 rounded-xl px-4 py-3.5"
+            style={{
+              border: "1px solid var(--accent-border)",
+              background: "var(--accent-bg)",
+            }}
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span className="text-lg">🔌</span>
                 <div>
-                  <p className="text-sm font-semibold text-amber-300">
+                  <p className="text-sm font-semibold" style={{ color: "var(--accent-text)" }}>
                     Generator Backup
                   </p>
-                  <p className="text-[11px] text-amber-500/70 font-medium">
+                  <p className="text-[11px] font-medium" style={{ color: "var(--accent)", opacity: 0.7 }}>
                     အရေးကြီးဆုံး — most important
                   </p>
                 </div>
@@ -110,28 +146,24 @@ export default function Sidebar({
                 onClick={() =>
                   onFilterChange({ requireGenerator: !filters.requireGenerator })
                 }
-                className={`
-                  relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center
-                  rounded-full border-2 border-transparent transition-colors duration-200
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400
-                  ${
-                    filters.requireGenerator
-                      ? "bg-amber-600"
-                      : "bg-slate-700"
-                  }
-                `}
+                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-200 focus-visible:outline-none"
+                style={{
+                  backgroundColor: filters.requireGenerator ? "var(--accent)" : "var(--slider-track)",
+                  boxShadow: filters.requireGenerator
+                    ? `0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent)`
+                    : "none",
+                }}
               >
                 <span
-                  className={`
-                    pointer-events-none inline-block h-4 w-4 rounded-full bg-white
-                    shadow transition-transform duration-200
-                    ${filters.requireGenerator ? "translate-x-5" : "translate-x-0.5"}
-                  `}
+                  className="pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200"
+                  style={{
+                    transform: filters.requireGenerator ? "translateX(20px)" : "translateX(2px)",
+                  }}
                 />
               </button>
             </div>
             {filters.requireGenerator && (
-              <p className="mt-2 text-[10px] text-amber-500/60">
+              <p className="mt-2 text-[10px]" style={{ color: "var(--accent)", opacity: 0.6 }}>
                 ⚡ Only showing spots with backup power. Bodhi Cafe is hidden.
               </p>
             )}
@@ -140,7 +172,10 @@ export default function Sidebar({
 
         {/* Vibe Presets */}
         <section>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
+          <h2
+            className="mb-3 text-xs font-semibold uppercase tracking-widest"
+            style={{ color: "var(--text-muted)" }}
+          >
             🎯 Quick Vibe
           </h2>
           <div className="grid grid-cols-1 gap-2">
@@ -159,27 +194,46 @@ export default function Sidebar({
       </div>
 
       {/* ── Footer ── */}
-      <div className="border-t border-slate-800 px-6 py-4">
+      <div
+        className="px-6 py-4"
+        style={{ borderTop: "1px solid var(--border-strong)" }}
+      >
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-sm text-slate-400">
-            <span className="text-lg font-bold text-white tabular-nums">
+          <span className="text-sm" style={{ color: "var(--text-secondary)" }}>
+            <span
+              className="text-lg font-bold tabular-nums"
+              style={{ color: "var(--text-primary)" }}
+            >
               {matchCount}
             </span>
-            <span className="text-slate-500"> / {totalCount} spots</span>
+            <span style={{ color: "var(--text-muted)" }}> / {totalCount} spots</span>
           </span>
           <button
             onClick={onReset}
-            className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-500 transition hover:bg-slate-800 hover:text-slate-300"
+            className="rounded-lg px-3 py-1.5 text-xs font-medium transition"
+            style={{ color: "var(--text-muted)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "var(--bg-hover)"
+              e.currentTarget.style.color = "var(--text-secondary)"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "transparent"
+              e.currentTarget.style.color = "var(--text-muted)"
+            }}
           >
             Reset
           </button>
         </div>
         {/* Match bar */}
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
+        <div
+          className="h-1.5 w-full overflow-hidden rounded-full"
+          style={{ background: "var(--slider-track)" }}
+        >
           <div
-            className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500 ease-out"
+            className="h-full rounded-full transition-all duration-500 ease-out"
             style={{
               width: totalCount > 0 ? `${(matchCount / totalCount) * 100}%` : "0%",
+              background: "linear-gradient(to right, var(--accent), color-mix(in srgb, var(--accent) 70%, #f97316))",
             }}
           />
         </div>
@@ -187,3 +241,4 @@ export default function Sidebar({
     </aside>
   )
 }
+
